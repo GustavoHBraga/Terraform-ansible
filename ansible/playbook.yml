@@ -16,7 +16,7 @@
        - "uvicorn[standard]"
        - fastapi
        - pydantic
-    
+     
   - name: Clone do projeto no GIT
     git:
       repo: https://github.com/GustavoHBraga/Produtos-api

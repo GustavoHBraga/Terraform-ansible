@@ -19,7 +19,7 @@ resource "aws_instance" "app_server" {
   key_name = "${var.KEY_NAME}"
                 
   tags = {
-    Name = "Primeira instância"
+    Name = "AWS-Terraform-Python-Ansible"
   }
   connection {
     user = "${var.INSTANCE_USERNAME}"

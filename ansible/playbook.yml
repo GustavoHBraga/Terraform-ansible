@@ -1,9 +1,33 @@
 - hosts: ansible-terraform
   tasks:
-  - name: criando o arquivo index.html
-    copy:
-      dest: /home/ubuntu/index.html
-      content: <h1>Ansible e Terraform 2</h1>
-  - name: Criando o servidor http
-    shell: "nohup busybox httpd -f -p 8080 &"
-  
+  - name: Instalando python3 e virtualenv
+    apt:
+      pkg:
+      - python3
+      - virtualenv
+      - git
+      update_cache: yes # Sempre manter atualizado o projeto
+    become: yes # Usar sudo
+    
+  - name: Instalando as dependencias do projeto FAST-API
+    pip:
+       virtualenv: /home/ubuntu/app/venv
+       name:
+       - "uvicorn[standard]"
+       - fastapi
+       - pydantic
+    
+  - name: Clone do projeto no GIT
+    git:
+      repo: https://github.com/GustavoHBraga/Produtos-api
+      dest: /home/ubuntu/app/project
+      clone: yes
+      force: yes
+     
+  - name: Iniciando o projeto FAST API
+    ansible.builtin.shell:
+      cmd: '. /home/ubuntu/app/venv/bin/activate; python /home/ubuntu/app/project/app.py'
+    async: 3500
+    poll: 0
+    
+    
